@@ -9,5 +9,5 @@ import lombok.Setter;
 @Setter
 
 public class RespostaModelo {
-    
+    private String Resposta;
 }
