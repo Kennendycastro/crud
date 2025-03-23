@@ -23,20 +23,34 @@ public class ProdutoServico {
         return pr.findAll();
     }
 
+    
+
     //Cadastrar produtos
     
-    public ResponseEntity<?> cadastrar(ProdutoModelo pm){
+    public ResponseEntity<?> cadastrarAlterar(ProdutoModelo pm ,String acao ){
        if(pm.getNome().equals("")){
 
-            rm.setResposta("O nome do produto é obrigatorio");
+            rm.setResposta("O nome do produto é obrigatório.");
             return new ResponseEntity<RespostaModelo>(rm, HttpStatus.BAD_REQUEST);
 
-        }else if(pm.getNome().equals("")){
+        }else if(pm.getMarca().equals("")){
             
-            rm.setResposta("O nome da marca do produto é obrigatoria");
+            rm.setResposta("O nome da marca do produto é um valor obrigatório.");
             return new ResponseEntity<RespostaModelo>(rm, HttpStatus.BAD_REQUEST);
         }else{
-            return new ResponseEntity<ProdutoModelo>(pr.save(pm),HttpStatus.CREATED);
+            if (acao.equals("cadastrar")) {
+
+                return new ResponseEntity<ProdutoModelo>(pr.save(pm), HttpStatus.CREATED);
+                
+            }else{
+                return new ResponseEntity<ProdutoModelo>(pr.save(pm), HttpStatus.OK);
+            }
         }
+    }
+
+    public ResponseEntity<RespostaModelo> remover(Long codigo){
+        pr.deleteById(codigo);
+        rm.setResposta("O produto foi removido com sucesso.");
+        return new ResponseEntity<>( rm, HttpStatus.OK);
     }
 }
