@@ -1,22 +1,36 @@
-function Formulario({botao}){
+function Formulario({botao, eventoTeclado, cadastrar, obj, cancelar, remover, alterar}){
     return(
         <form>
-            <h2>Sistema Gestor de Produtos</h2>
-            <input className="form-control" type="text" placeholder="Nome"></input>
-            <input className="form-control" type="text" placeholder="Marca"></input>
+
+
+            <input type='text' value={obj.nome}  placeholder='Nome'  onChange={eventoTeclado} name="nome"  className='form-control'/>
+            <input type='text' value={obj.marca} placeholder='Marca' onChange={eventoTeclado} name="marca" className='form-control'/>
+
             {
-               botao
+                botao
                 ?
-                <input className="btn btn-success" type="button" value="Cadastrar" />
+                <button type="button" onClick={cadastrar} className='btn btn-primary'>
+                <i className="fas fa-plus" ></i> Adicionar
+            </button>
+            
                 :
+
                 <div>
-                    <input className="btn btn-warning" type="button" value="Cancelar" />
-                    <input className="btn btn-primary" type="button" value="Alterar" />
-                    <input className="btn btn-danger"  type="button" value="Remover" />
+                    <button type="button" onClick={alterar} className="btn btn-warning">
+                        <i className="fas fa-edit"></i> Alterar
+                    </button>
+                    <button type='button' onClick={remover}  value='Remover'   className='btn btn-danger'>
+                        <i className="fas fa-remove"></i> Remover
+                    </button>
+                    <button type='button' onClick={cancelar} value='Cancelar'  className='btn btn-secondary'>
+                        <i className="fas fa-cancel"></i> Cancelar
+                        </button>
                 </div>
             }
+            
         </form>
     )
+    
 }
 
 export default Formulario;
