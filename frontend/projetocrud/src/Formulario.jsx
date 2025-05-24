@@ -10,8 +10,8 @@ function Formulario({botao, eventoTeclado, cadastrar, obj, cancelar, remover, al
                 botao
                 ?
                 <button type="button" onClick={cadastrar} className='btn btn-primary'>
-                <i className="fas fa-plus" ></i> Adicionar
-            </button>
+                  <i className="fas fa-plus" ></i> Adicionar
+                 </button>
             
                 :
 
