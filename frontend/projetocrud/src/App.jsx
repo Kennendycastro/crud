@@ -3,10 +3,7 @@ import './App.css';
 import Formulario from './Formulario';
 import Tabela from './Tabela';
 
-
-
 function App() {
-
   //Objeto produto
   const produto = {
     codigo: null,
@@ -18,12 +15,21 @@ function App() {
   const [btnCadastrar, setBtnCadastrar] = useState(true);
   const [produtos, setProdutos] = useState([]);
   const [objProduto, setObjProduto] = useState(produto);
+  const [loading, setLoading] = useState(true);
 
   //UseEffect
   useEffect(() => {
+    setLoading(true);
     fetch("http://localhost:8080/listar")
       .then(retorno => retorno.json())
-      .then(retorno_convertido => setProdutos(retorno_convertido));
+      .then(retorno_convertido => {
+        setProdutos(retorno_convertido);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
   }, []);
 
   //Obter dados do formulário
@@ -39,7 +45,6 @@ function App() {
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json'
-
       }
     })
       .then(retorno => retorno.json())
@@ -118,7 +123,6 @@ function App() {
         setProdutos(vetorTemp);
 
         limparFormulario();
-
       })
   }
 
@@ -132,13 +136,30 @@ function App() {
   const selecionarProduto = (indice) => {
     setObjProduto(produtos[indice]);
     setBtnCadastrar(false);
-
   }
 
   return (
-    <div>
-      <Formulario botao={btnCadastrar} eventoTeclado={aoDigitar} cadastrar={cadastrar} obj={objProduto} cancelar={limparFormulario} remover={remover} alterar={alterar}/>
-      <Tabela vetor={produtos} selecionar={selecionarProduto} />
+    <div className="app-container">
+      <h1 className="app-title">Gerenciamento de Produtos</h1>
+      <p className="app-subtitle">Cadastre, edite e gerencie seu inventário de produtos</p>
+      
+      <Formulario 
+        botao={btnCadastrar} 
+        eventoTeclado={aoDigitar} 
+        cadastrar={cadastrar} 
+        obj={objProduto} 
+        cancelar={limparFormulario} 
+        remover={remover} 
+        alterar={alterar}
+      />
+      
+      {loading ? (
+        <div className="loading">Carregando produtos...</div>
+      ) : (
+        <div className="table-container">
+          <Tabela vetor={produtos} selecionar={selecionarProduto} />
+        </div>
+      )}
     </div>
   );
 }
